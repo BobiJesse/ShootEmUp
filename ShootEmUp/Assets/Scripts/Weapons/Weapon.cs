@@ -1,26 +1,29 @@
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "Weapon", menuName = "Scriptable Objects/Weapon")]
-public class Weapon : ScriptableObject
+public class Weapon
 {
-    public enum weaponStyle
+    private SOWeapon weaponSpecs;
+
+    public int CurrentLevel { get; private set; } = 1;
+
+    public Weapon(SOWeapon specs)
     {
-        normal,
-        fire,
-        beam
+        weaponSpecs = specs;
     }
 
-    [Header("Weapon Type")]
-    public weaponStyle chosenWeaponStyle;
+    public int Damage
+    {
+        get { return weaponSpecs.levels[CurrentLevel - 1].damage; }
+    }
 
-    [Header ("Audio")]
-    public AudioClip shootAudioClip;
+    public void IncreaseLevel()
+    {
+        if (CurrentLevel < weaponSpecs.levels.Length)
+        {
+            CurrentLevel++;
+        }
+    }
 
-    [Header ("Bullet")]
-    public Bullet bulletPrefab;
-
-    [Header("Fire parameters")]
-    public float fireSpeed = 0f;
-    public int damage = 0;
-    private int maxLevel = 3;
+    public void ResetLevel()
+    {
+        CurrentLevel = 1;
+    }
 }

@@ -3,8 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : SpaceObject
 {
+    [SerializeField] private SOWeapon weaponSpecs;
+    [SerializeField] private float fireSpeed = 2f;
+
+    private Weapon currentWeapon;
+    private float nextFireTime;
+
     [SerializeField] private float moveSpeed = 6f;
-    [SerializeField] private float moveForce = 10f;
 
     private InputSystem_Actions controls;
     private Vector2 moveInput;
@@ -17,7 +22,12 @@ public class PlayerController : SpaceObject
 
         controls.Player.Jump.performed += OnFire;
 
+        controls.Player.Move.performed += OnMove;
+        controls.Player.Move.canceled += OnMove;
+
         rb = GetComponent<Rigidbody2D>();
+
+        currentWeapon = new Weapon(weaponSpecs);
     }
 
     private void OnEnable()
@@ -37,18 +47,48 @@ public class PlayerController : SpaceObject
         transform.position += movement * moveSpeed * Time.deltaTime;
     }
 
-    private void FixedUpdate()
+    private void OnMove(InputAction.CallbackContext context)
     {
-        if (controls.Player.Boost.IsPressed())
-        {
-            rb.AddForce(transform.up * moveForce);
-        }
+        moveInput = context.ReadValue<Vector2>();
     }
 
     private void OnFire(InputAction.CallbackContext context)
     {
-        Debug.Log("Pew!");
-        // Spawn laser here
-        AudioController.Instance.PlaySoundEffect("Laser_Shoot_1");
+        if (Time.time < nextFireTime)
+            return;
+
+        nextFireTime = Time.time + 1f / fireSpeed;
+
+        int damage = currentWeapon.Damage;
+
+        Debug.Log("Pew! Damage: " + damage);
+
+        //AudioController.Instance.PlaySoundEffect("Laser_Shoot_1");
+
+        //Instantiate(weaponSpecs.bulletPrefab, transform.position + transform.up * 0.8f, transform.rotation);
+        Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(weaponSpecs.bulletPrefab as Bullet);
+
+        b.transform.position = gameObject.transform.position;
+        b.BulletInit(damage);
+    }
+    public void ChangeWeapon(SOWeapon newWeapon)
+    {
+        weaponSpecs = newWeapon;
+        currentWeapon = new Weapon(weaponSpecs);
+        Debug.Log(newWeapon + "" + currentWeapon);
+    }
+
+    public void UpgradeWeapon()
+    {
+        currentWeapon.IncreaseLevel();
+        Debug.Log("Weapon level increased to " + currentWeapon.CurrentLevel);
+    }
+
+    public bool CheckWeapon(SOWeapon newWeapon)
+    {
+        if (newWeapon == weaponSpecs)
+            return true;
+        else 
+            return false;
     }
 }

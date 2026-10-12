@@ -13,4 +13,14 @@ public class SpaceObject : MonoBehaviour
     {
         
     }
+
+    public void Init()
+    {
+        
+    }
+
+    public void ResetObject()
+    {
+
+    }
 }

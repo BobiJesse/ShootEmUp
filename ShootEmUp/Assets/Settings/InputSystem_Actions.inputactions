@@ -47,16 +47,6 @@
                     "priority": 0
                 },
                 {
-                    "name": "Boost",
-                    "type": "Button",
-                    "id": "9ee3005e-bb11-4e0c-bd95-ab712789452d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Hold",
-                    "initialStateCheck": false,
-                    "priority": 0
-                },
-                {
                     "name": "Crouch",
                     "type": "Button",
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
@@ -468,17 +458,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "59c4f21b-c31c-4a26-94c7-f155e5b32377",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Boost",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

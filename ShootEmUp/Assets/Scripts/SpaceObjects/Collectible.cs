@@ -1,15 +1,17 @@
-using System;
 using UnityEngine;
 
 public class Collectible : SpaceObject
 {
     SpriteRenderer renderer;
+    [SerializeField] private SOWeapon weaponToGive;
 
     public enum collectibleType
     {
         coin,
         health,
-        upgrade
+        upgrade,
+        straightWeapon,
+        sineWeapon
     }
 
     public collectibleType chosenType;
@@ -31,16 +33,42 @@ public class Collectible : SpaceObject
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collectible");
         if (collision.CompareTag("Player"))
         {
+            PlayerController player = collision.GetComponent<PlayerController>();
+
+            if (player == null)
+                return;
+
             Destroy(gameObject);
-            Debug.Log("moi");
+
+            switch (chosenType)
+            {
+                case collectibleType.coin:
+                    break;
+
+                case collectibleType.health:
+                    break;
+
+                case collectibleType.straightWeapon:
+                    if (player.CheckWeapon(weaponToGive))
+                        player.UpgradeWeapon();
+                    else
+                        player.ChangeWeapon(weaponToGive);
+                    break;
+
+                case collectibleType.sineWeapon:
+                    if (player.CheckWeapon(weaponToGive))
+                        player.UpgradeWeapon();
+                    else
+                        player.ChangeWeapon(weaponToGive);
+                    break;
+            }
         }
     }
 }
