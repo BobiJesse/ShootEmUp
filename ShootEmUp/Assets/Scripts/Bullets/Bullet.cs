@@ -82,7 +82,7 @@ public class Bullet : SpaceObject
         elapsedTime = 0f;
         lifetTime = 0f;
         startPosition = transform.position;
-        targetPosition = Vector2.zero;
+        targetPosition = ApplicationController.Instance.player.transform.position;
 
         sineDirection = direction;
     }

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa6c4e3a8aab8ed448a29891adb530e5, type: 3}
-  m_Name: Bullet_Sine_Reverse
+  m_Name: EnemyTrackBullet
   m_EditorClassIdentifier: Assembly-CSharp::SOMovementParameters
-  Pattern: 1
-  Direction: {x: 0, y: 1}
-  speed: 5
+  Pattern: 2
+  Direction: {x: 0, y: -1}
+  speed: 1
   amplitude: 1
-  frequency: 5
+  frequency: 1
   duration: 1
   TargetOffset: {x: 0, y: 0}

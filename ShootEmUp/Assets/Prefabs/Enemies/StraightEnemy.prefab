@@ -107,6 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   movementParameters: {fileID: 11400000, guid: 970c80ae35e7adf49b709c2eaeaf0acd, type: 2}
+  maxHealth: 2
+  health: 0
+  damage: 1
   bulletPrefab: {fileID: 1937163079210334433, guid: 2dca843a76508344b9201f5ba03af342, type: 3}
   mainSpriteRenderer: {fileID: 0}
 --- !u!61 &4706640249483646970
