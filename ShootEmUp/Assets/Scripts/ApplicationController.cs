@@ -35,13 +35,16 @@ public class ApplicationController : SingletonMono<ApplicationController>
     }
     private async Awaitable NewGameSequence()
     {
-        for (int i = 3; i > 0; i--)
+        for (int i = 0; i < 10; i++)
         {
-            Debug.Log(i + "...");
-            await Awaitable.WaitForSecondsAsync(1f);
+            for (int j = 3; j > 0; j--)
+            {
+                Debug.Log(j + "...");
+                await Awaitable.WaitForSecondsAsync(1f);
+            }
+                SpawnTestEnemies(6);
+            await Awaitable.WaitForSecondsAsync(5f);
         }
-        //This is for testing purposes only! Later on we'll spawn waves of enemies with more sophisticated way
-        SpawnTestEnemies(6);
     }
 
     public void QuitGame()
@@ -73,6 +76,8 @@ public class ApplicationController : SingletonMono<ApplicationController>
                     Camera.main,
                     i,
                     count);
+
+            enemy.EnemyInit();
         }
     }
 }

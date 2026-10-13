@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Player : SpaceObject
 {
-    public int health = 5;
+    public float health = 5;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,9 +17,9 @@ public class Player : SpaceObject
         
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float damage)
     {
-        health -= 1;
+        health -= damage;
 
         if (health <= 0)
         {

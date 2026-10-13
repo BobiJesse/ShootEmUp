@@ -1,4 +1,5 @@
 
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Bullet : SpaceObject
@@ -10,9 +11,13 @@ public class Bullet : SpaceObject
     private Vector2 targetPosition;
     private float lifetTime = 0;
     [SerializeField] private string tagNameForHit;
-    public int damage;
+    public float damage;
+
+    public GameObject bulletOwner;
 
     SpriteRenderer mainSpriteRenderer;
+
+    private float sineDirection = 1f;
 
     private void Start()
     {
@@ -48,7 +53,8 @@ public class Bullet : SpaceObject
                 currentPosition = MovementPatterns.Sine(
                     startPosition,
                     movementParameters,
-                    elapsedTime
+                    elapsedTime,
+                    sineDirection
                 );
                 break;
 
@@ -67,17 +73,27 @@ public class Bullet : SpaceObject
         transform.position = currentPosition;
     }
 
-    public void BulletInit(int _weaponDamage)
+    public void BulletInit(float _weaponDamage, GameObject owner, float direction)
     {
         damage = _weaponDamage;
+        bulletOwner = owner;
+
+        // Reset movement
+        elapsedTime = 0f;
+        lifetTime = 0f;
+        startPosition = transform.position;
+        targetPosition = Vector2.zero;
+
+        sineDirection = direction;
     }
 
     protected void CheckVisibilityInCamera()
     {
         if (!CameraHelper.SpriteBoundsInCameraView(mainSpriteRenderer, Camera.main))
         {
-            ApplicationController.Instance.ObjectPool.Return(this);
-            Debug.Log(gameObject.name + " palautettu pooliin");
+            ReturnBullet();
+            //ApplicationController.Instance.ObjectPool.Return(this);
+            //Debug.Log(gameObject.name + " palautettu pooliin");
         }
     }
 
@@ -85,13 +101,25 @@ public class Bullet : SpaceObject
     {
         if (collision.CompareTag(tagNameForHit))
         {
-            ApplicationController.Instance.ObjectPool.Return(this);
-            if (collision.CompareTag("Enemy"))
-                collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
-                //ApplicationController.Instance.ObjectPool.Return(collision.gameObject.GetComponent<Enemy>());
+            if (collision.TryGetComponent<Enemy>(out Enemy enemy))
+            {
+                enemy.TakeDamage(damage);
+                ReturnBullet();
+                //Debug.LogWarning("The enemy took " + damage + " damage");
+            }
 
-            if (collision.CompareTag("Player"))
-                collision.gameObject.GetComponent<Player>().TakeDamage();
+            else if (collision.TryGetComponent<Player>(out Player player))
+            {
+                player.TakeDamage(damage);
+                ReturnBullet();
+            }
         }
+    }
+
+    private void ReturnBullet()
+    {
+        bulletOwner = null;
+        damage = 1f;
+        ApplicationController.Instance.ObjectPool.Return(this);
     }
 }

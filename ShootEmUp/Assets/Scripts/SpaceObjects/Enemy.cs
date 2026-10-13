@@ -12,14 +12,18 @@ public class Enemy : SpaceObject
     private Vector3 targetPositionOffSet = new Vector3 (0, 1, 0);
     private float lifeTime = 0;
 
-    public int maxHealth = 2;
-    public int health;
+    public float maxHealth = 2;
+    public float health;
+
+    [SerializeField] private int damage = 1;
 
     public Bullet bulletPrefab;
 
     public SpriteRenderer mainSpriteRenderer;
 
     private CancellationTokenSource shootingCancellation;
+
+    private float sineDirection = 1f;
 
     private void Awake()
     {
@@ -34,6 +38,15 @@ public class Enemy : SpaceObject
 
         shootingCancellation = new CancellationTokenSource();
         _ = NewGameSequence(shootingCancellation.Token);
+    }
+
+    public void EnemyInit()
+    {
+        startPosition = transform.position;
+        sineDirection = Random.value < 0.5f ? -1f : 1f;
+        health = maxHealth;
+        elapsedTime = 0f;
+        targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
     }
 
     private async Awaitable NewGameSequence(CancellationToken token)
@@ -80,7 +93,8 @@ public class Enemy : SpaceObject
                 currentPosition = MovementPatterns.Sine(
                     startPosition,
                     movementParameters,
-                    elapsedTime
+                    elapsedTime,
+                    sineDirection
                 );
                 break;
 
@@ -111,10 +125,11 @@ public class Enemy : SpaceObject
     {
         Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(bulletPrefab as Bullet);
 
+        b.BulletInit(damage, gameObject, sineDirection);
         b.transform.position = gameObject.transform.position;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
 
@@ -124,15 +139,16 @@ public class Enemy : SpaceObject
 
     public void Die()
     {
-        ApplicationController.Instance.ObjectPool.Return(this);
-        Debug.Log(gameObject.name + " palautettu pooliin");
+        //ApplicationController.Instance.ObjectPool.Return(this);
+        ReturnEnemy();
+        //Debug.Log(gameObject.name + " palautettu pooliin");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<Player>().TakeDamage();
+            collision.gameObject.GetComponent<Player>().TakeDamage(damage);
         }
     }
 
@@ -140,8 +156,9 @@ public class Enemy : SpaceObject
     {
         if (!CameraHelper.SpriteBoundsInCameraView(mainSpriteRenderer, Camera.main))
         {
-            ApplicationController.Instance.ObjectPool.Return(this);
-            Debug.Log(gameObject.name + " palautettu pooliin");
+            //ApplicationController.Instance.ObjectPool.Return(this);
+            ReturnEnemy();
+            //Debug.Log(gameObject.name + " palautettu pooliin");
         }
     }
 
@@ -153,5 +170,11 @@ public class Enemy : SpaceObject
             shootingCancellation.Dispose();
             shootingCancellation = null;
         }
+    }
+
+    private void ReturnEnemy()
+    {
+        ApplicationController.Instance.ObjectPool.Return(this);
+        health = maxHealth;
     }
 }

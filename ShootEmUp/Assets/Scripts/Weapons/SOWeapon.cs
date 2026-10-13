@@ -13,7 +13,7 @@ public class SOWeapon : ScriptableObject
     [System.Serializable]
     public class WeaponLevelStats
     {
-        public int damage = 1;
+        public float damage = 1;
         public float fireSpeed = 1;
     }
 

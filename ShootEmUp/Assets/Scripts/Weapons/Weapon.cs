@@ -9,10 +9,16 @@ public class Weapon
         weaponSpecs = specs;
     }
 
-    public int Damage
+    public float Damage
     {
         get { return weaponSpecs.levels[CurrentLevel - 1].damage; }
     }
+
+    public float FireSpeed
+    {
+        get { return weaponSpecs.levels[CurrentLevel - 1].fireSpeed; }
+    }
+
 
     public void IncreaseLevel()
     {
