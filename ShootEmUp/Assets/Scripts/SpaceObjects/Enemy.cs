@@ -25,6 +25,10 @@ public class Enemy : SpaceObject
 
     private float sineDirection = 1f;
 
+    public AudioClip hitSound;
+    public AudioClip shootSound;
+    public AudioClip dieSound;
+
     private void Awake()
     {
         mainSpriteRenderer = GetComponent<SpriteRenderer>();
@@ -139,6 +143,7 @@ public class Enemy : SpaceObject
 
     public void Die()
     {
+        AudioManager.instance.PlaySFX(dieSound);
         //ApplicationController.Instance.ObjectPool.Return(this);
         ReturnEnemy();
         //Debug.Log(gameObject.name + " palautettu pooliin");

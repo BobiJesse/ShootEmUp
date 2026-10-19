@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   health: 5
+  deathSound: {fileID: 8300000, guid: 1dc177c9d0d8347d0b0a178593807e77, type: 3}
 --- !u!114 &5744975581157346831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,9 +216,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
   weaponSpecs: {fileID: 11400000, guid: 364f2b350f85d354ab1de720c2bc6e08, type: 2}
-  fireSpeed: 2
   moveSpeed: 8
-  moveForce: 10
+  shootSound: {fileID: 8300000, guid: 854fa7e18326a472db0df6c83381c7b1, type: 3}
+  weaponChangeSound: {fileID: 8300000, guid: a0fbeb571ed114dc29e75de4226e56c5, type: 3}
+  weaponUpgradeSound: {fileID: 8300000, guid: 5662835f9ea8e46a6aced93a46e17a3b, type: 3}
 --- !u!61 &1177715148164078377
 BoxCollider2D:
   m_ObjectHideFlags: 0

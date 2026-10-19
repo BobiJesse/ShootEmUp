@@ -5,6 +5,8 @@ public class Player : SpaceObject
 {
     public float health = 5;
 
+    public AudioClip deathSound;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,11 +27,12 @@ public class Player : SpaceObject
         {
             //game over
             Debug.Log("Game Over");
+            Die();
         }
     }
 
     public void Die()
     {
-
+        AudioManager.instance.PlaySFX(deathSound);
     }
 }

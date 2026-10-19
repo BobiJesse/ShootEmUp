@@ -17,6 +17,10 @@ public class PlayerController : SpaceObject
 
     private bool sineGoesLeft = true;
 
+    public AudioClip shootSound;
+    public AudioClip weaponChangeSound;
+    public AudioClip weaponUpgradeSound;
+
     private void Awake()
     {
         controls = new InputSystem_Actions();
@@ -65,6 +69,7 @@ public class PlayerController : SpaceObject
         Debug.Log("Pew! Damage: " + damage);
 
         //AudioController.Instance.PlaySoundEffect("Laser_Shoot_1");
+        AudioManager.instance.PlaySFX(shootSound);
 
         //Instantiate(weaponSpecs.bulletPrefab, transform.position + transform.up * 0.8f, transform.rotation);
         Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(weaponSpecs.bulletPrefab as Bullet);
@@ -82,6 +87,7 @@ public class PlayerController : SpaceObject
 
     public void ChangeWeapon(SOWeapon newWeapon)
     {
+        AudioManager.instance.PlaySFX(weaponChangeSound);
         weaponSpecs = newWeapon;
         currentWeapon = new Weapon(weaponSpecs);
         Debug.Log(newWeapon + "" + currentWeapon);
@@ -89,6 +95,7 @@ public class PlayerController : SpaceObject
 
     public void UpgradeWeapon()
     {
+        AudioManager.instance.PlaySFX(weaponUpgradeSound);
         currentWeapon.IncreaseLevel();
         Debug.Log("Weapon level increased to " + currentWeapon.CurrentLevel);
     }

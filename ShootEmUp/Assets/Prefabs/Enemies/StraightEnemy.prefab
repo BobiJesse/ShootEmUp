@@ -112,6 +112,9 @@ MonoBehaviour:
   damage: 1
   bulletPrefab: {fileID: 1937163079210334433, guid: 2dca843a76508344b9201f5ba03af342, type: 3}
   mainSpriteRenderer: {fileID: 0}
+  hitSound: {fileID: 0}
+  shootSound: {fileID: 0}
+  dieSound: {fileID: 8300000, guid: 39d95322e08d84fc88a217e689779f38, type: 3}
 --- !u!61 &4706640249483646970
 BoxCollider2D:
   m_ObjectHideFlags: 0
