@@ -25,16 +25,18 @@ public class Enemy : SpaceObject
 
     private float sineDirection = 1f;
 
-    public AudioClip hitSound;
-    public AudioClip shootSound;
     public AudioClip dieSound;
+
+    public GameObject explosionPrefab;
+    public GameObject sineWeaponUpgradePrefab;
+    public GameObject straightWeaponUpgradePrefab;
 
     private void Awake()
     {
         mainSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         startPosition = transform.position;
         targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
@@ -61,7 +63,17 @@ public class Enemy : SpaceObject
             {
                 await Awaitable.WaitForSecondsAsync(1f, token);
 
-                Shoot();
+                switch(movementParameters.Pattern)
+                {
+                    case SOMovementParameters.MovePattern.Straight:
+                        ShootTowardsPlayer();
+                        break;
+
+                    case SOMovementParameters.MovePattern.Sine:
+                    case SOMovementParameters.MovePattern.Target:
+                        Shoot();
+                        break;
+                }
             }
         }
         catch (System.OperationCanceledException)
@@ -133,6 +145,14 @@ public class Enemy : SpaceObject
         b.transform.position = gameObject.transform.position;
     }
 
+    private void ShootTowardsPlayer()
+    {
+        Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(bulletPrefab);
+
+        b.transform.position = transform.position;
+        b.BulletInitTowardsPlayer(damage, gameObject);
+    }
+
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -147,6 +167,18 @@ public class Enemy : SpaceObject
         //ApplicationController.Instance.ObjectPool.Return(this);
         ReturnEnemy();
         //Debug.Log(gameObject.name + " palautettu pooliin");
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        int dropChance = Random.Range(0, 10);
+
+        if (dropChance == 2)
+        {
+            Instantiate(straightWeaponUpgradePrefab, transform.position, Quaternion.identity);
+        }
+        else if (dropChance == 3)
+        {
+            Instantiate(sineWeaponUpgradePrefab, transform.position, Quaternion.identity);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

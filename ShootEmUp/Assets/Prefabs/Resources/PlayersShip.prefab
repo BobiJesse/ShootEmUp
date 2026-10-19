@@ -203,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   health: 5
   deathSound: {fileID: 8300000, guid: 1dc177c9d0d8347d0b0a178593807e77, type: 3}
+  explosionPrefab: {fileID: 798969981974381761, guid: 2696497e2e8b20244ade88af918366db, type: 3}
 --- !u!114 &5744975581157346831
 MonoBehaviour:
   m_ObjectHideFlags: 0

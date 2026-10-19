@@ -7,6 +7,8 @@ public class Player : SpaceObject
 
     public AudioClip deathSound;
 
+    public GameObject explosionPrefab;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,5 +36,7 @@ public class Player : SpaceObject
     public void Die()
     {
         AudioManager.instance.PlaySFX(deathSound);
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

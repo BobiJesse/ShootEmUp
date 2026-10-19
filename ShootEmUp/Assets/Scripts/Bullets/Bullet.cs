@@ -1,5 +1,4 @@
 
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Bullet : SpaceObject
@@ -9,6 +8,8 @@ public class Bullet : SpaceObject
     private float elapsedTime;
     private Vector2 startPosition;
     private Vector2 targetPosition;
+    private Vector2 bulletDirection;
+    private bool moveTowardsPlayer;
     private float lifetTime = 0;
     [SerializeField] private string tagNameForHit;
     public float damage;
@@ -33,6 +34,17 @@ public class Bullet : SpaceObject
         {
             lifetTime = 0;
             CheckVisibilityInCamera();
+
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+        }
+
+        if (moveTowardsPlayer)
+        {
+            transform.position += (Vector3)(bulletDirection * movementParameters.speed * Time.deltaTime);
+            return;
         }
 
         Vector2 currentPosition = transform.position;
@@ -75,6 +87,7 @@ public class Bullet : SpaceObject
 
     public void BulletInit(float _weaponDamage, GameObject owner, float direction)
     {
+        moveTowardsPlayer = false;
         damage = _weaponDamage;
         bulletOwner = owner;
 
@@ -85,6 +98,21 @@ public class Bullet : SpaceObject
         targetPosition = ApplicationController.Instance.player.transform.position;
 
         sineDirection = direction;
+    }
+
+    public void BulletInitTowardsPlayer(float bulletDamage, GameObject owner)
+    {
+        damage = bulletDamage;
+        bulletOwner = owner;
+
+        Vector2 playerPosition = ApplicationController.Instance.player.transform.position;
+        Vector2 bulletPosition = transform.position;
+
+        bulletDirection = (playerPosition - bulletPosition).normalized;
+        moveTowardsPlayer = true;
+
+        lifetTime = 0f;
+        elapsedTime = 0f;
     }
 
     protected void CheckVisibilityInCamera()
@@ -118,6 +146,9 @@ public class Bullet : SpaceObject
 
     private void ReturnBullet()
     {
+        Debug.Log($"Bullet returned to pool: {gameObject.name}", this);
+
+        moveTowardsPlayer = false;
         bulletOwner = null;
         damage = 1f;
         ApplicationController.Instance.ObjectPool.Return(this);

@@ -66,7 +66,7 @@ public class PlayerController : SpaceObject
 
         float damage = currentWeapon.Damage;
 
-        Debug.Log("Pew! Damage: " + damage);
+        //Debug.Log("Pew! Damage: " + damage);
 
         //AudioController.Instance.PlaySoundEffect("Laser_Shoot_1");
         AudioManager.instance.PlaySFX(shootSound);
