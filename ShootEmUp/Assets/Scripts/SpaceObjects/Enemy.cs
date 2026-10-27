@@ -72,6 +72,7 @@ public class Enemy : SpaceObject
 
                     case SOMovementParameters.MovePattern.Sine:
                     case SOMovementParameters.MovePattern.Target:
+                    case SOMovementParameters.MovePattern.Hover:
                         Shoot();
                         break;
                 }

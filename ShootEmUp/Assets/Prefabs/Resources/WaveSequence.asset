@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WaveSequence
   m_EditorClassIdentifier: Assembly-CSharp::SOWaveSequence
   waves:
-  - waveTexture: {fileID: 2800000, guid: cb989dbe3eac85d43a03a438b8ea8427, type: 3}
-    rowInterval: 1
+  - waveTexture: {fileID: 2800000, guid: acc0abcbfc0f94a4f9f1eb455d1e7cf6, type: 3}
+    rowInterval: 3
     delayBeforeWave: 5
   - waveTexture: {fileID: 2800000, guid: 0db32b15f84a5a24a8f3e528205893b6, type: 3}
     rowInterval: 1

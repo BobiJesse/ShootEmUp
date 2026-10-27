@@ -7,6 +7,7 @@ public class PlayerController : SpaceObject
 
     private Weapon currentWeapon;
     private float nextFireTime;
+    private bool isFiring;
 
     [SerializeField] private float moveSpeed = 6f;
 
@@ -25,7 +26,10 @@ public class PlayerController : SpaceObject
     {
         controls = new InputSystem_Actions();
 
-        controls.Player.Jump.performed += OnFire;
+        //controls.Player.Jump.performed += OnFire;
+
+        controls.Player.Jump.started += OnFire;
+        controls.Player.Jump.canceled += OnStopFire;
 
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
@@ -50,6 +54,11 @@ public class PlayerController : SpaceObject
         Vector3 movement = new Vector3(moveInput.x, moveInput.y, 0f);
 
         transform.position += movement * moveSpeed * Time.deltaTime;
+
+        if (isFiring)
+        {
+            FireWeapon();
+        }
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -59,6 +68,16 @@ public class PlayerController : SpaceObject
 
     private void OnFire(InputAction.CallbackContext context)
     {
+        isFiring = true;
+    }
+
+    private void OnStopFire(InputAction.CallbackContext context)
+    {
+        isFiring = false;
+    }
+
+    private void FireWeapon()
+    {
         if (Time.time < nextFireTime)
             return;
 
@@ -66,23 +85,20 @@ public class PlayerController : SpaceObject
 
         float damage = currentWeapon.Damage;
 
-        //Debug.Log("Pew! Damage: " + damage);
-
-        //AudioController.Instance.PlaySoundEffect("Laser_Shoot_1");
         AudioManager.instance.PlaySFX(shootSound);
 
-        //Instantiate(weaponSpecs.bulletPrefab, transform.position + transform.up * 0.8f, transform.rotation);
-        Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(weaponSpecs.bulletPrefab as Bullet);
+        Bullet b = ApplicationController.Instance.ObjectPool.Get<Bullet>(
+            weaponSpecs.bulletPrefab as Bullet);
 
         float direction = sineGoesLeft ? 1f : -1f;
-        b.transform.position = gameObject.transform.position;
+
+        b.transform.position = transform.position;
         b.BulletInit(damage, gameObject, direction);
 
         if (weaponSpecs.chosenWeaponStyle == SOWeapon.WeaponStyle.Sine)
         {
             sineGoesLeft = !sineGoesLeft;
         }
-        //Debug.LogWarning("Bullet given " + damage + "damage");
     }
 
     public void ChangeWeapon(SOWeapon newWeapon)
