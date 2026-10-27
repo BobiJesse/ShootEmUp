@@ -8,7 +8,7 @@ public class Enemy : SpaceObject
 
     private float elapsedTime;
     private Vector2 startPosition;
-    private Vector2 targetPosition;
+    public Vector2 targetPosition;
     private Vector3 targetPositionOffSet = new Vector3 (0, 1, 0);
     private float lifeTime = 0;
 
@@ -39,7 +39,7 @@ public class Enemy : SpaceObject
     private void OnEnable()
     {
         startPosition = transform.position;
-        targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
+        //targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
         health = maxHealth;
 
         shootingCancellation = new CancellationTokenSource();
@@ -52,7 +52,8 @@ public class Enemy : SpaceObject
         sineDirection = Random.value < 0.5f ? -1f : 1f;
         health = maxHealth;
         elapsedTime = 0f;
-        targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
+        targetPosition = (Vector2)transform.position + Vector2.down * 3f;
+        //targetPosition = ApplicationController.Instance.player.transform.position + targetPositionOffSet;
     }
 
     private async Awaitable NewGameSequence(CancellationToken token)
@@ -131,6 +132,17 @@ public class Enemy : SpaceObject
                     elapsedTime = 0f;
                 }
 
+                break;
+
+            case SOMovementParameters.MovePattern.Hover:
+                elapsedTime += Time.deltaTime;
+
+                currentPosition = MovementPatterns.MoveToTarget(
+                    startPosition,
+                    targetPosition,
+                    elapsedTime,
+                    movementParameters
+                );
                 break;
         }
 

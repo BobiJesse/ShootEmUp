@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc32339b948956041bb278ada10c4272, type: 3}
+  m_Name: WaveSequence
+  m_EditorClassIdentifier: Assembly-CSharp::SOWaveSequence
+  waves:
+  - waveTexture: {fileID: 2800000, guid: cb989dbe3eac85d43a03a438b8ea8427, type: 3}
+    rowInterval: 1
+    delayBeforeWave: 5
+  - waveTexture: {fileID: 2800000, guid: 0db32b15f84a5a24a8f3e528205893b6, type: 3}
+    rowInterval: 1
+    delayBeforeWave: 5
+  - waveTexture: {fileID: 2800000, guid: bb5d1bfca15cf4e42beaf64e318cc91d, type: 3}
+    rowInterval: 1
+    delayBeforeWave: 5

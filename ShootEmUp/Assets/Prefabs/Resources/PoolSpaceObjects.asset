@@ -15,15 +15,36 @@ MonoBehaviour:
   poolObjects:
   - prefab: {fileID: 5044653889368602875, guid: 560a3b03034fb144592f2cb70d78cee6, type: 3}
     initialSize: 10
+    colorID:
+      serializedVersion: 2
+      rgba: 4278190335
   - prefab: {fileID: 3367098685514823217, guid: 1e360d261f8eaad478e9c6edc2bb68fd, type: 3}
     initialSize: 10
+    colorID:
+      serializedVersion: 2
+      rgba: 4278249215
   - prefab: {fileID: 119584749717719902, guid: dea9a4e55ed294442b10618b397489a3, type: 3}
     initialSize: 10
+    colorID:
+      serializedVersion: 2
+      rgba: 4294901866
   - prefab: {fileID: 1937163079210334433, guid: 7b4f3cb6303ce6f46b981c36f36325d1, type: 3}
     initialSize: 20
+    colorID:
+      serializedVersion: 2
+      rgba: 4278190080
   - prefab: {fileID: 1937163079210334433, guid: ea94bf7fab536f040b5c80b29481268a, type: 3}
     initialSize: 20
+    colorID:
+      serializedVersion: 2
+      rgba: 4278190080
   - prefab: {fileID: 1937163079210334433, guid: 2dca843a76508344b9201f5ba03af342, type: 3}
     initialSize: 30
+    colorID:
+      serializedVersion: 2
+      rgba: 4278190080
   - prefab: {fileID: 1937163079210334433, guid: a790f363d6a11c74881cd6b66bd569cd, type: 3}
     initialSize: 30
+    colorID:
+      serializedVersion: 2
+      rgba: 4278190080

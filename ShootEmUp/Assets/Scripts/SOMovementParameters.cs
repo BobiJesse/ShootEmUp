@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SOMovementParameters", menuName = "Scriptable Objects/SOMovementParameters")]
 public class SOMovementParameters : ScriptableObject
 {
-    public enum MovePattern { Straight, Sine, Target }
+    public enum MovePattern { Straight, Sine, Target, Hover}
     public MovePattern Pattern;
 
     public Vector2 Direction = Vector2.down;

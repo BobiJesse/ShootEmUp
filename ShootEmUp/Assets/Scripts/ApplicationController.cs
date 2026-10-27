@@ -8,6 +8,11 @@ public class ApplicationController : SingletonMono<ApplicationController>
 
     [HideInInspector]
     public SOPoolSpaceObjects PoolSpaceObjects;
+    public SOWaveSequence waveSequence;
+
+    public EnemyWavePlayer wavePlayer;
+    public EnemyWaveManager waveManager;
+
     [System.NonSerialized]
     public ObjectPool ObjectPool = new ObjectPool();
 
@@ -21,8 +26,13 @@ public class ApplicationController : SingletonMono<ApplicationController>
     {
         //Load Scriptable object with a list of prefab references
         PoolSpaceObjects = Resources.Load<SOPoolSpaceObjects>("PoolSpaceObjects");
+
+        waveSequence = Resources.Load<SOWaveSequence>("WaveSequence");
         //Then initialize pool(s) with amount of initialSize
         InitObjectPool();
+
+        wavePlayer = new EnemyWavePlayer(ObjectPool, Camera.main, PoolSpaceObjects);
+        waveManager = new EnemyWaveManager(waveSequence, wavePlayer);
 
         ui = Instantiate(Resources.Load("UI")).GetComponent<UIController>().Init();
         player = Instantiate<PlayerController>(Resources.Load<PlayerController>("PlayersShip"));
@@ -30,7 +40,8 @@ public class ApplicationController : SingletonMono<ApplicationController>
 
     public void StartNewGame()
     {
-        Awaitable awaitable = NewGameSequence();
+        Awaitable awaitable = waveManager.StartWaves();
+        //Awaitable awaitable = NewGameSequence();
         //awaitable.Cancel(); <-- jos awaitable tarvitsee lopettaa, se voidaan tehdä Cancel-metodilla (tai tokenilla, mutta tämä on helpompi tapa)
     }
     private async Awaitable NewGameSequence()
